@@ -1,0 +1,67 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Async JavaScript Demo</title>
+</head>
+<body>
+  <h1>Async JavaScript Demo</h1>
+  <button id="runDemo">Run Demo</button>
+  <pre id="output"></pre>
+
+  <script>
+    // Helper function to log to both console and page
+    function logMessage(message) {
+      console.log(message);
+      document.getElementById("output").textContent += message + "\n";
+    }
+
+    document.getElementById("runDemo").addEventListener("click", () => {
+      document.getElementById("output").textContent = ""; // clear old logs
+
+      // ----------------------
+      // Part 1: setTimeout Demo
+      // ----------------------
+      logMessage("=== Part 1: setTimeout Demo ===");
+      logMessage("First message");
+
+      setTimeout(() => {
+        logMessage("Second message (after 2 seconds)");
+      }, 2000);
+
+      logMessage("Third message");
+
+      // ----------------------
+      // Part 2: Fetch API + Promises
+      // ----------------------
+      logMessage("\n=== Part 2: Fetch API + Promises ===");
+
+      fetch("https://api.adviceslip.com/advice")
+        .then(response => response.json())
+        .then(data => {
+          logMessage("Here’s your advice (Promises): " + data.slip.advice);
+        })
+        .catch(error => logMessage("Error: " + error));
+
+      // ----------------------
+      // Part 3: Async/Await
+      // ----------------------
+      logMessage("\n=== Part 3: Async/Await ===");
+
+      async function getAdvice() {
+        try {
+          let response = await fetch("https://api.adviceslip.com/advice");
+          let data = await response.json();
+          logMessage("Here’s your advice (Async/Await): " + data.slip.advice);
+        } catch (error) {
+          logMessage("Error: " + error);
+        }
+      }
+
+      getAdvice();
+    });
+  </script>
+</body>
+</html>
+# async_activity
